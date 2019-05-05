@@ -5,13 +5,17 @@ mongoose.connect('mongodb://localhost:27017/UserAuthentication',{useNewUrlParser
 
 var Todo = mongoose.model('Todo', {
 	UserId:{
-	   type: Number	
-	},
-	UserName: {
-		type: String
+	   type: Number	,
+	   default: null
 	},
 	UserEmail: {
-		type: String
+		type : String,
+	    required : true,
+	    trim : true
+	},
+	UserPassword : {
+		type : String,
+	    required : true
 	}
 });
 
@@ -26,9 +30,9 @@ var Todo = mongoose.model('Todo', {
 // })
 
 var otherTodo = new Todo ({
-	UserId:2,
-	UserName: 'Lizhu',
-	UserEmail:'dev@test.com'
+	UserId:1,
+	UserEmail:'dev@test.com',	
+	UserPassword: 'Lizhu'
 });
 
 otherTodo.save().then((doc)=>{
