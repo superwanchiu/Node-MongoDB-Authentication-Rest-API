@@ -26,15 +26,9 @@ var Todo = mongoose.model('Todo', {
 // })
 
 var otherTodo = new Todo ({
-	UserId:{
-	   type: 2	
-	},
-	UserName: {
-		type: 'Lizhu'
-	},
-	UserEmail: {
-		type: 'dev@test.com'
-	}
+	UserId:2,
+	UserName: 'Lizhu',
+	UserEmail:'dev@test.com'
 });
 
 otherTodo.save().then((doc)=>{
