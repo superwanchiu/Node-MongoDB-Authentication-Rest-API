@@ -1,42 +1,39 @@
-var mongoose = require('mongoose');
-mongoose.Promise = global.Promise;
+var express = require('express');
+var bodyParser = require('body-parser');
 
-mongoose.connect('mongodb://localhost:27017/UserAuthentication',{useNewUrlParser: true});
+var {mongoose} = require('./db/mongoose');
+var {LoginModel} = require('./models/login');
 
-var Todo = mongoose.model('Todo', {
-	UserId:{
-	   type: Number	,
-	   default: null
-	},
-	UserEmail: {
-		type : String,
-	    required : true,
-	    trim : true
-	},
-	UserPassword : {
-		type : String,
-	    required : true
-	}
+var app = express();
+
+app.use(bodyParser.json());
+
+app.post('/login',(req,res)=>{
+	console.log(req.body);
+	var login = new LoginModel({
+		UserId: req.body.UserId,
+		UserEmail: req.body.UserEmail,
+		UserPassword: req.body.UserPassword
+	});
+    login.save().then((doc)=>{
+	   res.status(200).send(doc);
+	}, (e)=>{
+		res.status(400).send(e);
+	});
 });
 
-// var newTodo = new Todo({
-// 	UserName: 'Lizhu'
+app.listen(4200,() => {
+	console.log('Started on Port 4200');
+})
+
+// var otherTodo = new Todo ({
+// 	UserId:1,
+// 	UserEmail:'dev@test.com',	
+// 	UserPassword: 'Lizhu'
 // });
 
-// newTodo.save().then((doc)=>{
-// 	console.log('Saved Todo',doc);
+// otherTodo.save().then((doc)=>{
+//    console.log(JSON.stringify(doc,undefined, 2));
 // }, (e)=>{
-// 	console.log('Unable save to do');
-// })
-
-var otherTodo = new Todo ({
-	UserId:1,
-	UserEmail:'dev@test.com',	
-	UserPassword: 'Lizhu'
-});
-
-otherTodo.save().then((doc)=>{
-   console.log(JSON.stringify(doc,undefined, 2));
-}, (e)=>{
-	console.log('Unable to save',e);
-});
+// 	console.log('Unable to save',e);
+// });
